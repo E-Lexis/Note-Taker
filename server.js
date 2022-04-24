@@ -33,7 +33,8 @@ function validateNote(note) {
 
 //API routes
 app.get('/api/notes', (req, res) => {
-  res.json(notes);
+  let savedNotes = notes;
+  res.json(savedNotes);
 });
 
 app.post('/api/notes', (req, res) => {
@@ -42,8 +43,8 @@ app.post('/api/notes', (req, res) => {
     if (!validateNote(req.body)) {
         res.status(400).send('Your note is not properly formatted.');
       } else {
-      const note = createNewNote(req.body, notes);
-      res.json(note);
+      const newNote = createNewNote(req.body, notes);
+      res.json(newNote);
       }
 });
 
