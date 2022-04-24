@@ -1,16 +1,3 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-import fetch from 'node-fetch';
-
-const PORT = process.env.PORT || 3001;
-
-const app = express();
-app.use(express.json());
-app.use(express.static('public'));
-
-const { notes } = require(__dirname,'./db/db.json');
-
 let noteTitle;
 let noteText;
 let saveNoteBtn;
@@ -45,27 +32,14 @@ const getNotes = () =>
     headers: {
       'Content-Type': 'application/json',
     },
-  })
-  .then(response => {
-    if (response.ok) {
-      return response.json(notes);
-      }
-   });
+  });
 
 const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
     headers: {
-      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(note),
-  })
-  .then(response => {
-    if (response.ok) {
-      return response.json();
-    }
-    alert('Error: ' + response.statusText);
   });
 
 const deleteNote = (id) =>
@@ -76,23 +50,6 @@ const deleteNote = (id) =>
     },
   });
 
-//HTML routes
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/index.html'));
-});
-
-app.get('/notes', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/notes.html'));
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/index.html'));
-});
-
-app.listen(PORT, () => {
-  console.log(`API server now on port ${PORT}!`);
-});   
- 
 const renderActiveNote = () => {
   hide(saveNoteBtn);
 
